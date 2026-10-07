@@ -1,4 +1,4 @@
-pip install fastapi uvicorn sqlalchemy passlib[bcrypt] python-jose[cryptography] python-dotenv python-multipart
+pip install fastapi uvicorn "sqlalchemy>=2.0,<2.1" passlib[bcrypt] python-jose[cryptography] python-dotenv python-multipart
 
 app = FastAPI()
 uvicorn main:app --reload
@@ -25,3 +25,15 @@ alembic init alembic
 alembic.ini: target_metadata = Base.metadata
 alembic revision --autogenerate -m "initial migration"
 alembic upgrade head
+
+usuario.py
+@auth_router.post("/criar_conta")
+async def criar_conta(email: str, senha: str, nome: str):
+def pegar_sessao():
+pip install bcrypt==4.0.1
+bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
+schemas.py
+class UsuarioSchema(BaseModel):
+schemas aparece no fastapi/docs
