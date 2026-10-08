@@ -11,6 +11,13 @@ def criar_token(id_usuario):
     token = f"n2984ry23fqjjp{id_usuario}"
     return token
 
+def autenticar_usuario(email, senha, session):
+    usuario = session.query(Usuario).filter(Usuario.email == email).first()
+    if not usuario:
+        return False
+    elif not bcrypt_context.verify(senha, usuario.senha):   #compara, nao descriptografa
+        return False
+    return usuario
 
 
 #configs rota
@@ -40,9 +47,9 @@ async def criar_conta(usuario_schema: UsuarioSchema, session: Session = Depends(
 
 @auth_router.post("/login")
 async def login(login_schema: LoginSchema, session: Session = Depends(pegar_sessao)):
-    usuario = session.query(Usuario).filter(Usuario.email == login_schema.email).first()
+    usuario = autenticar_usuario(login_schema.email, login_schema.senha, session)
     if not usuario:
-        raise HTTPException(status_code = 400, detail="usuario nao encontrado")
+        raise HTTPException(status_code = 400, detail="usuario nao encontrado ou credenciais invalidas")
     else:
         access_token = criar_token(usuario.id)
         return {
