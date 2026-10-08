@@ -9,6 +9,11 @@ class UsuarioSchema(BaseModel):
     senha: str
     ativo: Optional[bool]
     admin: Optional[bool]
-
     class Config:   # para ser interpretado como orm, trasnformado em sql
+        from_attributes = True
+
+
+class PedidoSchema(BaseModel):
+    id_usuario: int
+    class Config: 
         from_attributes = True

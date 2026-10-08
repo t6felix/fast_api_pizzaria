@@ -31,6 +31,7 @@ usuario.py
 async def criar_conta(email: str, senha: str, nome: str):
 def pegar_sessao():
 pip install bcrypt==4.0.1
+.env: SECRET_KEY = ""
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
