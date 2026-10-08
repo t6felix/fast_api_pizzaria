@@ -38,3 +38,8 @@ bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 schemas.py
 class UsuarioSchema(BaseModel):
 schemas aparece no fastapi/docs
+
+
+@order_router.post("/pedido")
+
+@auth_router.post("/login")
