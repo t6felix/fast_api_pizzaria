@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from dependecies import pegar_sessao, verificar_token
 from schemas import PedidoSchema
 from sqlalchemy.orm import Session
-from models import Pedido
+from models import Pedido, Usuario
 
 
 
@@ -24,10 +24,12 @@ async def criar_pedido(pedido_schema: PedidoSchema, session: Session = Depends(p
     return {"mensagem": f"pedido criado com sucesso: {novo_pedido.usuario}"}
 
 @order_router.post("/pedido/cancelar/{id_pedido}")
-async def cancelar_pedido(id_pedido: int, session: Session = Depends(pegar_sessao)):
+async def cancelar_pedido(id_pedido: int, session: Session = Depends(pegar_sessao),usuario: Usuario = Depends(verificar_token)):
     pedido = session.query(Pedido).filter(Pedido.id).first()
     if not pedido:
         raise HTTPException(status_code=400, detail="pedido nao encontrado")
+    if not usuario.admin and usuario.id != pedido.usuario:
+        raise HTTPException(status_code=400, detail="vc nao tem autorização para fazer esta modifcação")
     pedido.status = "CANCELADO"
     session.commit()
     return {"mensagem": f"pedido numero {id_pedido} cancelado com sucesso",
