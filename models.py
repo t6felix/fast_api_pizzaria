@@ -47,6 +47,12 @@ class Pedido(Base):
         self.status = status
         self.preco = preco
 
+    def calcular_preco(self):
+        #percorrer tds itens do pedido
+        #somar precos
+        #editar preco para o valor final
+        self.preco = 10
+
 
 #itens do pedido
 class ItemPedido(Base):
