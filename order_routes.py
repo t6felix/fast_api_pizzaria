@@ -16,12 +16,16 @@ async def pedidos():
     """
     return {"mensagem": "vc acessu pedidos"}
 
+
+
 @order_router.post("/pedido")
 async def criar_pedido(pedido_schema: PedidoSchema, session: Session = Depends(pegar_sessao)):
     novo_pedido = Pedido(usuario = pedido_schema.id_usuario) #olhar models do pedido, demais campos tem default
     session.add(novo_pedido)
     session.commit()
     return {"mensagem": f"pedido criado com sucesso: {novo_pedido.usuario}"}
+
+
 
 @order_router.post("/pedido/cancelar/{id_pedido}")
 async def cancelar_pedido(id_pedido: int, session: Session = Depends(pegar_sessao),usuario: Usuario = Depends(verificar_token)):
@@ -32,5 +36,5 @@ async def cancelar_pedido(id_pedido: int, session: Session = Depends(pegar_sessa
         raise HTTPException(status_code=400, detail="vc nao tem autorização para fazer esta modifcação")
     pedido.status = "CANCELADO"
     session.commit()
-    return {"mensagem": f"pedido numero {id_pedido} cancelado com sucesso",
+    return {"mensagem": f"pedido numero {pedido.id} cancelado com sucesso",
             "pedido": pedido}
