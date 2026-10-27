@@ -70,7 +70,7 @@ async def login(login_schema: LoginSchema, session: Session = Depends(pegar_sess
         }
 
 
-@auth_router.post("/login-form")
+@auth_router.post("/login-form")    # para usar autenticação por formulario pela doc fastapi
 async def login_form(dados_formulario: OAuth2PasswordRequestForm = Depends(), session: Session = Depends(pegar_sessao)):
     usuario = autenticar_usuario(dados_formulario.username, dados_formulario.password, session)
     if not usuario:
