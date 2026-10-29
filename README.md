@@ -39,7 +39,6 @@ schemas.py
 class UsuarioSchema(BaseModel):
 schemas aparece no fastapi/docs
 
+@auth_router.post("/login")
 
 @order_router.post("/pedido")
-
-@auth_router.post("/login")

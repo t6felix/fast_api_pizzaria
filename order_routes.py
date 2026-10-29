@@ -72,3 +72,23 @@ async def adicionar_item_pedido(id_pedido: int,
             "item_id": item_pedido.id,
             "preco_pedido": pedido.preco}
 
+
+
+@order_router.post("/pedido/remover-item/{id_item_pedido}")
+async def remover_item_pedido(id_item_pedido: int, 
+                                session: Session = Depends(pegar_sessao),
+                                usuario: Usuario = Depends(verificar_token)):
+    item_pedido = session.query(ItemPedido).filter(ItemPedido.id==id_item_pedido).first()
+    pedido = session.query(Pedido).filter(Pedido.id==item_pedido.pedido).first()
+    if not item_pedido:
+        raise HTTPException(status_code=400, detail="item do pedido nao existent")
+    if not usuario.admin and usuario.id != pedido.usuario:
+        raise HTTPException(status_code=400, detail="vc nao tem autorização para fazer esta operação")
+
+    session.delete(item_pedido)
+    pedido.calcular_preco()
+    session.commit()
+
+    return{"mensagem": "item removido com sucesso",
+            "pedido": pedido}
+
