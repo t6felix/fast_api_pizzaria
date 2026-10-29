@@ -94,3 +94,29 @@ async def remover_item_pedido(id_item_pedido: int,
             # "qtd_itens_pedido": len(pedido.itens),
             "pedido": pedido}
 
+
+
+@order_router.post("/pedido/finalizar/{id_pedido}")
+async def finalizar_pedido(id_pedido: int, session: Session = Depends(pegar_sessao),usuario: Usuario = Depends(verificar_token)):
+    pedido = session.query(Pedido).filter(Pedido.id == id_pedido).first()
+    if not pedido:
+        raise HTTPException(status_code=400, detail="pedido nao encontrado")
+    if not usuario.admin and usuario.id != pedido.usuario:
+        raise HTTPException(status_code=400, detail="vc nao tem autorização para fazer esta modifcação")
+    pedido.status = "FINALIZADO"
+    session.commit()
+    return {"mensagem": f"pedido numero {pedido.id} finalziado com sucesso",
+            "pedido": pedido}
+
+
+@order_router.get("/pedido/{id_pedido}")
+async def visualizar_pedido(id_pedido: int,session: Session = Depends(pegar_sessao),usuario: Usuario = Depends(verificar_token)):
+    pedido = session.query(Pedido).filter(Pedido.id == id_pedido).first()
+    if not pedido:
+        raise HTTPException(status_code=400, detail="pedido nao encontrado")
+    if not usuario.admin and usuario.id != pedido.usuario:
+        raise HTTPException(status_code=400, detail="vc nao tem autorização para fazer esta modifcação")
+    return {
+        "qtd_itens_pedido": len(pedido.itens),
+        "pedido": pedido
+    }
