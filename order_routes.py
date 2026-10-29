@@ -41,7 +41,7 @@ async def cancelar_pedido(id_pedido: int, session: Session = Depends(pegar_sessa
 
 
 
-@order_router.get("/list")
+@order_router.get("/listar")
 async def listar_pedidos(session: Session = Depends(pegar_sessao),usuario: Usuario = Depends(verificar_token)):
     if not usuario.admin:
         raise HTTPException(status_code=401, detail="vc nao tem autorização para realizar esta ação")
@@ -109,6 +109,7 @@ async def finalizar_pedido(id_pedido: int, session: Session = Depends(pegar_sess
             "pedido": pedido}
 
 
+
 @order_router.get("/pedido/{id_pedido}")
 async def visualizar_pedido(id_pedido: int,session: Session = Depends(pegar_sessao),usuario: Usuario = Depends(verificar_token)):
     pedido = session.query(Pedido).filter(Pedido.id == id_pedido).first()
@@ -120,3 +121,10 @@ async def visualizar_pedido(id_pedido: int,session: Session = Depends(pegar_sess
         "qtd_itens_pedido": len(pedido.itens),
         "pedido": pedido
     }
+
+
+
+@order_router.get("/listar/{pedidos-usuario}")      # do usuario logado
+async def listar_pedidos(session: Session = Depends(pegar_sessao),usuario: Usuario = Depends(verificar_token)):
+    pedidos = session.query(Pedido).filter(Pedido.usuario==usuario.id).all()
+    return {"pedidos": pedidos}
