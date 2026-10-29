@@ -68,6 +68,3 @@ class ItemPedido(Base):
         self.tamanho = tamanho
         self.preco_unitario = preco_unitario
         self.pedido = pedido
-
-
-# executaa a criação das tabelas no banco de dados
