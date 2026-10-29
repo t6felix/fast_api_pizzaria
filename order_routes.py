@@ -90,5 +90,7 @@ async def remover_item_pedido(id_item_pedido: int,
     session.commit()
 
     return{"mensagem": "item removido com sucesso",
+            "itens_pedido":pedido.itens,
+            # "qtd_itens_pedido": len(pedido.itens),
             "pedido": pedido}
 
