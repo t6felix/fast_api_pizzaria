@@ -518,3 +518,11 @@ Projeto criado para estudo de:
 - Relacionamentos ORM
 - APIs REST
 - Segurança e autenticação
+
+---
+
+## Referência
+
+Série de estudos FastAPI:
+
+https://www.youtube.com/watch?v=BtIy2aD8k_w&list=PLpdAy0tYrnKy3TvpCT-x7kGqMQ5grk1Xq
